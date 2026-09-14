@@ -2,7 +2,7 @@
   "name": "vscode-desginbackground",
   "displayName": "vscode_desginbackground",
   "description": "Set a local image as the VS Code editor background.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "your-publisher-id",
   "engines": { "vscode": "^1.85.0" },
   "license": "MIT",

@@ -1,4 +1,4 @@
-# Editor Wallpaper
+# vscode-designbackground
 
 A focused VS Code extension for using a local image as the editor background.
 

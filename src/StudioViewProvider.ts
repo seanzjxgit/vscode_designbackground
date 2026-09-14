@@ -24,7 +24,19 @@ export class StudioViewProvider implements WebviewViewProvider {
         const cfg = workspace.getConfiguration('backgroundCover');
         const imagePath = resolveCurrentImagePath(cfg.get<string>('imagePath') || '');
         let preview = '';
-        try { if (imagePath && fs.existsSync(imagePath)) preview = this.view.webview.asWebviewUri(Uri.file(imagePath)).toString(); } catch { /* ignore */ }
+        try {
+            if (imagePath && fs.existsSync(imagePath)) {
+                // A webview can only load local files below localResourceRoots. Wallpaper
+                // files normally live outside the extension installation, so permit the
+                // selected image's directory before converting it to a webview URI.
+                const imageUri = Uri.file(imagePath);
+                this.view.webview.options = {
+                    enableScripts: true,
+                    localResourceRoots: [this.context.extensionUri, Uri.file(path.dirname(imagePath))]
+                };
+                preview = this.view.webview.asWebviewUri(imageUri).toString();
+            }
+        } catch { /* The panel remains usable if the selected file cannot be read. */ }
         this.view.webview.postMessage({ type: 'state', data: { imagePath, preview, opacity: resolveCurrentOpacity(cfg.get<number>('opacity') || 0.2), blur: resolveCurrentBlur(cfg.get<number>('blur') || 0), sizeModel: cfg.get<string>('sizeModel') || 'cover', blendModel: cfg.get<string>('blendModel') || 'auto' } });
     }
     private html(webview: Webview): string {
