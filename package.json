@@ -1,0 +1,249 @@
+{
+    "name": "background-cover",
+    "displayName": "background-cover",
+    "description": "Add a picture you like to cover the entire vscode background (Hot Reload Supported). / 添加你喜欢的图片覆盖整个vscode背景（支持热更新）",
+    "version": "3.7.0",
+    "publisher": "manasxx",
+    "engines": {
+        "vscode": "^1.38.0"
+    },
+    "one_title": true,
+    "icon": "resources/background-cover.png",
+    "galleryBanner": {
+        "color": "#03385a",
+        "theme": "dark"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "Background",
+        "Theme"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "license": "ISC",
+    "main": "./out/extension",
+    "extensionKind": [
+        "ui",
+        "workspace"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.backgroundCover.start",
+                "title": "backgroundCover - start"
+            },
+            {
+                "command": "extension.backgroundCover.refresh",
+                "title": "backgroundCover - refresh"
+            },
+            {
+                "command": "extension.backgroundCover.nest",
+                "title": "backgroundCover - nest"
+            },
+            {
+                "command": "backgroundCover.refreshEntry",
+                "title": "刷新",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "backgroundCover.home",
+                "title": "首页",
+                "icon": {
+                    "light": "resources/light/home.svg",
+                    "dark": "resources/dark/home.svg"
+                }
+            },
+            {
+                "command": "backgroundCover.switchMode",
+                "title": "配置",
+                "icon": "$(settings-gear)"
+            },
+            {
+                "command": "backgroundCover.support",
+                "title": "赞助",
+                "icon": "$(heart)"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.backgroundCover.refresh",
+                "key": "ctrl+shift+f7"
+            }
+        ],
+        "configuration": {
+            "title": "background-cover config",
+            "properties": {
+                "backgroundCover.opacity": {
+                    "type": "number",
+                    "maximum": 0.8,
+                    "minimum": 0,
+                    "default": 0.2,
+                    "description": "Background opacity (0 - 0.8) / 背景透明度(0 - 0.8)"
+                },
+                "backgroundCover.blur": {
+                    "type": "number",
+                    "maximum": 100,
+                    "minimum": 0,
+                    "default": 0,
+                    "description": "Background blur (0 - 100) / 背景模糊(0 - 100)"
+                },
+                "backgroundCover.imagePath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Background image path / 背景图片路径"
+                },
+                "backgroundCover.perWindowBackground": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Let each window keep its own background image. Turn this off to share one background across all windows (legacy behavior). / 每个窗口使用各自的背景图；关闭后所有窗口共用同一张背景图（旧版行为）"
+                },
+                "backgroundCover.randomImageFolder": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Background image's folder path for random / 图片目录"
+                },
+                "backgroundCover.autoStatus": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically change background each time you start / 每次启动时随机自动更换背景"
+                },
+                "backgroundCover.autoInterval": {
+                    "type": "number",
+                    "default": 10,
+                    "description": "Automatically change background interval in seconds / 自动更换背景的时间间隔（秒）"
+                },
+                "backgroundCover.sizeModel": {
+                    "type": "string",
+                    "enum": [
+                        "cover",
+                        "repeat",
+                        "contain",
+                        "center",
+                        "not_center",
+                        "not_right_bottom",
+                        "not_right_top",
+                        "not_left",
+                        "not_right",
+                        "not_top",
+                        "not_bottom"
+                    ],
+                    "default": "cover",
+                    "description": "Background image size adaptive mode / 图片尺寸适应模式"
+                },
+                "backgroundCover.blendModel": {
+                    "type": "string",
+                    "enum": [
+                        "auto",
+                        "multiply",
+                        "lighten"
+                    ],
+                    "default": "auto",
+                    "description": "Background image blend mode / 图片文字混合模式，对应主题模式"
+                },
+                "backgroundCover.defaultOnlinePage": {
+                    "type": "string",
+                    "default": "https://vs.20988.xyz/d/24-vscodebei-jing-tu-tu-ku",
+                    "description": "Online images default page / 在线图库默认页面"
+                },
+                "backgroundCover.cacheLimit": {
+                    "type": "number",
+                    "default": 200,
+                    "minimum": 10,
+                    "maximum": 10000,
+                    "description": "Max number of cached online image files. Older files are removed once the cache exceeds this. / 在线图片缓存上限（文件个数），超出后按时间自动清理最旧的文件"
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "backgroundCover-explorer",
+                    "title": "backgroundCover",
+                    "icon": "resources/big.svg"
+                }
+            ]
+        },
+        "views": {
+            "backgroundCover-explorer": [
+                {
+                    "id": "backgroundCover.studio",
+                    "type": "webview",
+                    "name": "Studio",
+                    "when": "backgroundCover.mode == 'menu'"
+                },
+                {
+                    "id": "backgroundCover.menu",
+                    "name": "Menu",
+                    "when": "backgroundCover.mode == 'legacyMenu'"
+                },
+                {
+                    "id": "backgroundCover.readerView",
+                    "type": "webview",
+                    "name": "Online Gallery",
+                    "when": "backgroundCover.mode != 'menu' && backgroundCover.mode != 'legacyMenu'"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "backgroundCover.refreshEntry",
+                    "when": "view == backgroundCover.studio",
+                    "group": "navigation@0"
+                },
+                {
+                    "command": "backgroundCover.support",
+                    "when": "view == backgroundCover.studio",
+                    "group": "navigation@1"
+                }
+            ]
+        }
+    },
+    "bugs": {
+        "url": "https://github.com/AShujiao/vscode-background-cover/issues",
+        "email": "a916817706@live.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AShujiao/vscode-background-cover.git"
+    },
+    "homepage": "https://github.com/AShujiao/vscode-background-cover/blob/master/README.md#manasxx-readme",
+    "scripts": {
+        "vscode:prepublish": "npm run build:webview && npm run compile",
+        "vscode:uninstall": "node ./out/uninstall",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "package": "vsce package",
+        "build:webview": "cd webview && npm install --silent && npm run build",
+        "watch:webview": "cd webview && npm run dev",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "test:prune": "npm run compile && node scripts/test-prune-cache.js",
+        "test:particle": "npm run compile && node scripts/test-particle-throttle.js",
+        "test:newfeatures": "npm run compile && node scripts/test-new-features.js",
+        "test:unit": "npm run compile && node scripts/test-prune-cache.js && node scripts/test-particle-throttle.js && node scripts/test-new-features.js",
+        "check": "tslint -p ./"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
+        "@types/lockfile": "^1.0.4",
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^22.9.0",
+        "@types/proper-lockfile": "^4.1.4",
+        "@types/vscode": "^1.30.0",
+        "@vscode/vsce": "^3.9.2",
+        "@vscode/test-electron": "^2.3.2",
+        "typescript": "^4.5.4"
+    },
+    "dependencies": {
+        "async-mutex": "^0.5.0",
+        "fs-extra": "^11.2.0",
+        "proper-lockfile": "^4.1.2",
+        "@vscode/sudo-prompt": "^9.3.2"
+    }
+}
